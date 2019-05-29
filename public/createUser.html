@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Create A User</title>
+        <link rel="stylesheet" href="bootstrap.min.css">
+        <script src="/socket.io/socket.io.js"></script>
+    </head>
+    <body>
+        <center><b><br></b><h1>Create A User</h1><br><br><br>
+            <input placeholder="Name" id="name" class="form-control"><br>
+            <input placeholder="Username" id="uname" class="form-control"><br>
+            <input placeholder="Password" id="passw" type="password" class="form-control"><br>
+            <button class="btn btn-outline-danger" id="submit">Create User</button>
+
+        </center>
+    </body>
+    <script type="text/javascript">
+        var socket = io.connect('http://localhost:3000');
+        document.getElementById('submit').addEventListener('click', sendData)
+
+        function sendData() {
+            var uname = document.getElementById('uname').value;
+            var name = document.getElementById('name').value;
+            var passw = document.getElementById('passw').value;
+            var data = {uname: uname, name: name, passw: passw};
+            socket.emit("data", data)
+        }
+
+    </script>
+</html>
