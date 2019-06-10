@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Login To Your User</title>
+        <link rel="stylesheet" href="bootstrap.min.css">
+        <script src="/socket.io/socket.io.js"></script>
+    </head>
+    <style>
+        .alert{
+            width: 40%;
+        }
+    </style>
+    <body>
+        <center><b><br></b><h1>Log In</h1><br><br><br>
+            <div id="loginCheckAlertd" class="alert alert-dismissible alert-danger">
+                <button type="button" class="close" data-dismiss="alert" onclick="dissapear('d')">&times;</button>
+                Sorry, that Username and Password combonation does not exist please try again
+            </div><br>
+            <div id="loginCheckAlerts" class="alert alert-dismissible alert-success">
+                <button type="button" class="close" data-dismiss="alert" onclick="dissapear('s')">&times;</button>
+                You succesfully logged in!
+            </div><br>
+            <input placeholder="Username" id="uname" class="form-control"><br>
+            <input placeholder="Password" id="passw" type="password" class="form-control"><br>
+            <button class="btn btn-outline-danger" id="submit">Log In</button>
+
+        </center>
+    </body>
+    <script type="text/javascript">
+        var socket = io.connect('http://localhost:3000');
+        document.getElementById('submit').addEventListener('click', sendData)
+        document.getElementById("loginCheckAlerts").style.visibility = "hidden";
+        document.getElementById("loginCheckAlertd").style.visibility = "hidden";
+        function sendData() {
+            var uname = document.getElementById('uname').value;
+            var passw = document.getElementById('passw').value;
+            var data = {uname: uname, passw: passw};
+            socket.emit("login", data)
+        }
+
+        socket.on("loginCheck", (data) => {
+            if(data == true){
+                document.getElementById("loginCheckAlerts").style.visibility = "visible";
+
+            };
+            if(data == false){
+                document.getElementById("loginCheckAlertd").style.visibility = "visible";
+            };
+        });
+        function dissapear(l) {
+            document.getElementById("loginCheckAlert"+l).style.visibility = "hidden";
+        }
+    </script>
+</html>
